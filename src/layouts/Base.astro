@@ -24,6 +24,11 @@ const year = new Date().getFullYear();
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
+    <meta name="color-scheme" content="light" />
+    <style is:inline>
+      html{background:#ebe9e1;color-scheme:light}
+      html:has(body.tone-dark){background:#06123f}
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
