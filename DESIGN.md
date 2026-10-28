@@ -42,5 +42,6 @@ AI で作ったような「どこかで見た」サイトにしないための�
 
 1. `src/content/works/<slug>.md` を作る（`submarine-3d.md` を写す）。`no` は次の番号。
 2. `palette` に作品の色を 4 つ（bg / fg / accent / accent2）。
+   ゲームのロゴに決まった書体があれば `titleFont` に Google Fonts の名前を書き、`src/layouts/Base.astro` のフォント読み込みにも足す（作品名だけがその書体になる）。
 3. 画像と動画は `public/works/<slug>/` に置く。ループ動画は字幕のない 5 秒前後、音なし、1280px、2MB 以下。
 4. push すれば一覧・トップ・作品ページに自動で並ぶ。

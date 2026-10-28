@@ -7,6 +7,8 @@ const works = defineCollection({
     no: z.number(),
     title: z.string(),
     kana: z.string().optional(),
+    // ゲーム内のロゴと同じ書体。Google Fonts の名前で書き、Base.astro の読み込みにも足す
+    titleFont: z.string().optional(),
     tagline: z.string(),
     genre: z.string(),
     year: z.number(),

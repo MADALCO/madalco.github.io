@@ -2,6 +2,7 @@
 no: 1
 title: SUBMARINE 3D
 kana: サブマリン 3D
+titleFont: Audiowide
 tagline: 深さまで読んだ者が、勝つ。
 genre: 3D 潜水艦バトル（ターン制）
 year: 2026

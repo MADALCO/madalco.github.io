@@ -34,7 +34,9 @@ const no = String(d.no).padStart(3, "0");
           <span>{d.year}</span>
           <span class="st">{d.status}</span>
         </div>
-        <h1>{d.title}</h1>
+        <h1 class:list={{ custom: d.titleFont }} style={d.titleFont && `font-family:"${d.titleFont}",var(--f-display)`}>
+          {d.title}
+        </h1>
         <p class="tag">{d.tagline}</p>
       </div>
     </section>
@@ -194,6 +196,13 @@ const no = String(d.no).padStart(3, "0");
     line-height: 0.86;
     letter-spacing: -0.045em;
     white-space: nowrap;
+  }
+  h1.custom {
+    font-weight: 400;
+    font-variation-settings: normal;
+    letter-spacing: 0;
+    line-height: 1;
+    font-size: calc((100vw - var(--gutter) * 2) * 0.112);
   }
   .tag {
     margin: 18px 0 0;

@@ -31,7 +31,7 @@ const href = `/works/${work.id}/`;
         <span>{d.year}</span>
         <span class="st">{d.status}</span>
       </div>
-      <h3 class="title">{d.title}</h3>
+      <h3 class:list={["title", { custom: d.titleFont }]} style={d.titleFont && `font-family:"${d.titleFont}",var(--f-display)`}>{d.title}</h3>
       <p class="tag">{d.tagline}</p>
       <dl class="spec mono">
         <div><dt>Genre</dt><dd>{d.genre}</dd></div>
@@ -117,6 +117,12 @@ const href = `/works/${work.id}/`;
     font-size: clamp(40px, 5.6vw, 92px);
     line-height: 0.9;
     letter-spacing: -0.035em;
+  }
+  .title.custom {
+    font-weight: 400;
+    font-variation-settings: normal;
+    letter-spacing: 0;
+    line-height: 1;
   }
   .tag {
     margin: 18px 0 0;

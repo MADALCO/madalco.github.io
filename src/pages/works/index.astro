@@ -25,7 +25,11 @@ const works = (await getCollection("works")).sort((a, b) => b.data.no - a.data.n
         works.map((w) => (
           <a href={`/works/${w.id}/`} class="tr" role="row" style={`--w-bg:${w.data.palette.bg}`}>
             <span role="cell">{String(w.data.no).padStart(3, "0")}</span>
-            <span role="cell" class="t">
+            <span
+              role="cell"
+              class:list={["t", { custom: w.data.titleFont }]}
+              style={w.data.titleFont && `font-family:"${w.data.titleFont}",var(--f-display)`}
+            >
               {w.data.title}
             </span>
             <span role="cell" class="c-g">
@@ -98,6 +102,11 @@ const works = (await getCollection("works")).sort((a, b) => b.data.no - a.data.n
     font-size: clamp(20px, 2.4vw, 34px);
     letter-spacing: -0.03em;
     text-transform: uppercase;
+  }
+  .t.custom {
+    font-weight: 400;
+    font-variation-settings: normal;
+    letter-spacing: 0.01em;
   }
   a.tr {
     transition:
