@@ -1,0 +1,31 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Not found">
+  <section class="wrap nf">
+    <p class="mono">Error 404 — Miss</p>
+    <h1>外れ。</h1>
+    <p class="sub">このマスには何もありませんでした。</p>
+    <a href="/" class="mono ul">← Back to index</a>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding-top: clamp(60px, 12vw, 180px);
+    min-height: 50vh;
+  }
+  .nf .mono:first-child {
+    color: var(--signal);
+  }
+  h1 {
+    margin: 10px 0 0;
+    font-size: clamp(64px, 14vw, 200px);
+    line-height: 1;
+  }
+  .sub {
+    color: var(--ink-2);
+    margin: 18px 0 40px;
+  }
+</style>

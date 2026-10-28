@@ -1,0 +1,145 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+
+const works = (await getCollection("works")).sort((a, b) => b.data.no - a.data.no);
+---
+
+<Base title="Works" description="madalco の作品一覧">
+  <section class="wrap head">
+    <p class="mono idx">Index</p>
+    <h1>Works<sup class="mono">{String(works.length).padStart(3, "0")}</sup></h1>
+  </section>
+
+  <section class="wrap">
+    <div class="table mono" role="table">
+      <div class="tr th" role="row">
+        <span role="columnheader">No.</span>
+        <span role="columnheader">Title</span>
+        <span role="columnheader" class="c-g">Genre</span>
+        <span role="columnheader" class="c-p">Platform</span>
+        <span role="columnheader">Year</span>
+        <span role="columnheader" class="c-s">Status</span>
+      </div>
+      {
+        works.map((w) => (
+          <a href={`/works/${w.id}/`} class="tr" role="row" style={`--w-bg:${w.data.palette.bg}`}>
+            <span role="cell">{String(w.data.no).padStart(3, "0")}</span>
+            <span role="cell" class="t">
+              {w.data.title}
+            </span>
+            <span role="cell" class="c-g">
+              {w.data.genre}
+            </span>
+            <span role="cell" class="c-p">
+              {w.data.platforms.join(" / ")}
+            </span>
+            <span role="cell">{w.data.year}</span>
+            <span role="cell" class="c-s">
+              {w.data.status}
+            </span>
+            <img src={w.data.poster} alt="" class="peek" loading="lazy" />
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head {
+    padding-top: clamp(40px, 7vw, 100px);
+    padding-bottom: 30px;
+  }
+  .idx {
+    color: var(--ink-3);
+    margin: 0;
+  }
+  h1 {
+    margin: 0;
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-variation-settings: "wdth" 125;
+    font-size: clamp(64px, 16vw, 240px);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+  }
+  sup {
+    font-size: 14px;
+    vertical-align: top;
+    margin-left: 10px;
+    letter-spacing: 0.06em;
+    color: var(--signal);
+  }
+  .table {
+    border-top: 1px solid var(--rule-strong);
+  }
+  .tr {
+    position: relative;
+    display: grid;
+    grid-template-columns: 70px 3fr 3fr 2fr 70px 1.4fr;
+    gap: 16px;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  .th {
+    color: var(--ink-3);
+    padding: 10px 0;
+    border-bottom-color: var(--rule);
+  }
+  .tr span {
+    text-transform: none;
+  }
+  .t {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-variation-settings: "wdth" 125;
+    font-size: clamp(20px, 2.4vw, 34px);
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+  a.tr {
+    transition:
+      background 0.3s,
+      color 0.3s,
+      padding 0.3s;
+  }
+  a.tr:hover {
+    background: var(--ink);
+    color: var(--paper);
+    padding-inline: 12px;
+  }
+  .peek {
+    position: absolute;
+    right: 18%;
+    top: 50%;
+    width: 260px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    transform: translateY(-50%) rotate(-2deg) scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.3s,
+      transform 0.4s cubic-bezier(0.2, 0.7, 0.1, 1);
+    z-index: 2;
+  }
+  a.tr:hover .peek {
+    opacity: 1;
+    transform: translateY(-50%) rotate(-2deg) scale(1);
+  }
+  @media (max-width: 860px) {
+    .tr {
+      grid-template-columns: 50px 1fr 50px;
+    }
+    .c-g,
+    .c-p,
+    .c-s {
+      display: none;
+    }
+    .peek {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,184 @@
+---
+import "../styles/global.css";
+import Mark from "../components/Mark.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  tone?: "paper" | "dark";
+}
+const {
+  title,
+  description = "madalco は、ルールから組み立てる小さなゲームを作っています。",
+  image = "/og.jpg",
+  tone = "paper",
+} = Astro.props;
+const fullTitle = title ? `${title} — madalco` : "madalco — game works";
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const path = Astro.url.pathname;
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#ebe9e1" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+JP:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class={`tone-${tone}`}>
+    <header class="top wrap">
+      <a href="/" class="brand" aria-label="madalco ホーム">
+        <Mark size={18} />
+        <span>madalco</span>
+      </a>
+      <nav class="mono" aria-label="メイン">
+        <a href="/works/" class:list={["ul", { on: path.startsWith("/works") }]}>Works</a>
+        <a href="/#about" class="ul">About</a>
+        <a href="/privacy/" class:list={["ul", { on: path.startsWith("/privacy") }]}>Privacy</a>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="foot wrap">
+      <hr class="rule" />
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <Mark size={28} />
+          <p>ルールから組み立てる、<br />小さなゲームを作っています。</p>
+        </div>
+        <div class="mono foot-col">
+          <span class="lbl">Index</span>
+          <a class="ul" href="/works/">Works</a>
+          <a class="ul" href="/#about">About</a>
+          <a class="ul" href="/privacy/">Privacy policy</a>
+        </div>
+        <div class="mono foot-col">
+          <span class="lbl">Elsewhere</span>
+          <a class="ul" href="https://github.com/MADALCO" rel="noopener">GitHub ↗</a>
+        </div>
+        <div class="mono foot-col foot-end">
+          <span class="lbl">©</span>
+          <span>{year} madalco</span>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // スクロールで要素を出す
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              e.target.classList.add("is-in");
+              io.unobserve(e.target);
+            }
+          }
+        },
+        { rootMargin: "0px 0px -8% 0px" },
+      );
+      document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>
+
+<style>
+  .top {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .tone-dark .top {
+    background: color-mix(in srgb, #08090a 70%, transparent);
+    color: #e9e7df;
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    font-variation-settings: "wdth" 112;
+  }
+  nav {
+    display: flex;
+    gap: clamp(14px, 2.4vw, 32px);
+  }
+  nav a.on {
+    color: var(--signal);
+  }
+
+  .foot {
+    margin-top: clamp(80px, 12vw, 160px);
+    padding-bottom: 28px;
+  }
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 24px;
+    padding-top: 22px;
+  }
+  .foot-brand p {
+    margin: 14px 0 0;
+    color: var(--ink-2);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .foot-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .lbl {
+    color: var(--ink-3);
+    margin-bottom: 4px;
+  }
+  .foot-end {
+    align-items: flex-end;
+    text-align: right;
+  }
+  @media (max-width: 720px) {
+    .foot-grid {
+      grid-template-columns: 1fr 1fr;
+      row-gap: 32px;
+    }
+    .foot-brand {
+      grid-column: 1 / -1;
+    }
+    .foot-end {
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+</style>

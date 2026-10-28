@@ -1,0 +1,128 @@
+---
+import Base from "../layouts/Base.astro";
+const updated = "2026-10-28";
+---
+
+<Base title="Privacy policy" description="madalco のゲームとこのサイトのプライバシーポリシー">
+  <article class="wrap pp">
+    <header>
+      <p class="mono idx">Privacy policy</p>
+      <h1>プライバシーポリシー</h1>
+      <p class="mono upd">Last updated {updated}</p>
+    </header>
+
+    <div class="body">
+      <p>
+        madalco（以下「私たち」）は、私たちが提供するゲーム（SUBMARINE 3D とその後の作品）と、このサイト（以下あわせて「本サービス」）で扱う情報について、次のとおり定めます。
+      </p>
+
+      <h2><span class="mono">01</span>集める情報</h2>
+      <p>オンライン機能を使ったときに限り、Epic Online Services（EOS）を通じて次の情報を扱います。</p>
+      <ul>
+        <li>Epic アカウントの ID と表示名</li>
+        <li>対戦の記録（レート、試合数）とランキングの順位</li>
+        <li>対戦中に送った定型文（相手の画面に表示するためだけに使い、保存しません）</li>
+      </ul>
+      <p>
+        CPU 戦だけを遊ぶ場合、私たちは個人を特定できる情報を集めません。設定や称号、連勝数などは、遊んでいる PC の中にだけ保存されます。
+      </p>
+
+      <h2><span class="mono">02</span>使い道</h2>
+      <ul>
+        <li>オンライン対戦の相手探しと、対戦の進行</li>
+        <li>レートの計算とランキングの表示</li>
+        <li>不正やトラブルへの対応</li>
+      </ul>
+      <p>これ以外の目的には使わず、広告のために使ったり、第三者に売ったりすることはありません。</p>
+
+      <h2><span class="mono">03</span>第三者のサービス</h2>
+      <p>
+        ログイン、対戦の部屋、記録とランキングには Epic Games, Inc. の Epic Online Services を使っています。そこで扱われる情報は、<a
+          class="ul"
+          href="https://www.epicgames.com/site/privacypolicy"
+          rel="noopener">Epic Games のプライバシーポリシー</a
+        >にも従います。
+      </p>
+      <p>
+        このサイトは GitHub Pages で公開し、文字の表示に Google Fonts を使っています。これらのサービスは、ページを届けるためにアクセス元の IP アドレスなどを記録することがあります。このサイト自体は Cookie やアクセス解析を使っていません。
+      </p>
+
+      <h2><span class="mono">04</span>保存期間と削除</h2>
+      <p>
+        対戦の記録は、本サービスを提供している間は保存します。記録の削除を希望する場合は、下の連絡先までお知らせください。Epic アカウントそのものの情報は、Epic Games のアカウント設定から管理できます。
+      </p>
+
+      <h2><span class="mono">05</span>子どもの利用</h2>
+      <p>13 歳未満の方は、保護者の同意を得たうえでオンライン機能を使ってください。</p>
+
+      <h2><span class="mono">06</span>変更</h2>
+      <p>このポリシーを変えるときは、このページで知らせ、上の更新日を改めます。</p>
+
+      <h2><span class="mono">07</span>連絡先</h2>
+      <p>
+        本ポリシーや情報の扱いについてのお問い合わせは、<a class="ul" href="https://github.com/MADALCO" rel="noopener"
+          >GitHub（MADALCO）</a
+        >までお願いします。
+      </p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .pp {
+    display: grid;
+    grid-template-columns: 4fr 7fr 1fr;
+    gap: var(--gutter);
+    padding-top: clamp(40px, 7vw, 100px);
+  }
+  header {
+    position: sticky;
+    top: 80px;
+    align-self: start;
+  }
+  .idx {
+    color: var(--ink-3);
+    margin: 0 0 14px;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(28px, 3vw, 42px);
+    line-height: 1.3;
+  }
+  .upd {
+    margin-top: 16px;
+    color: var(--ink-2);
+  }
+  .body {
+    border-top: 1px solid var(--rule-strong);
+    padding-top: 10px;
+    max-width: 40em;
+  }
+  h2 {
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    font-size: 19px;
+    margin: 48px 0 12px;
+  }
+  h2 .mono {
+    color: var(--signal);
+  }
+  ul {
+    padding-left: 1.2em;
+  }
+  li {
+    margin: 4px 0;
+  }
+  a.ul {
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  @media (max-width: 860px) {
+    .pp {
+      grid-template-columns: 1fr;
+    }
+    header {
+      position: static;
+    }
+  }
+</style>
