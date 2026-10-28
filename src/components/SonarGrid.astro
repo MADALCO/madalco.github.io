@@ -34,78 +34,80 @@ const rows = [1, 2, 3, 4, 5, 6];
 </div>
 
 <script>
-  for (const root of document.querySelectorAll<HTMLElement>("[data-sonar]")) {
-    const N = 6;
-    const cells = [...root.querySelectorAll<HTMLButtonElement>(".cell")];
-    const status = root.querySelector<HTMLElement>("[data-status]")!;
-    const log = root.querySelector<HTMLOListElement>("[data-log]")!;
-    const done = root.querySelector<HTMLAnchorElement>("[data-done]")!;
-    const ships = new Set<string>();
-    const key = (x: number, y: number) => `${x},${y}`;
+  document.addEventListener("astro:page-load", () => {
+    for (const root of document.querySelectorAll<HTMLElement>("[data-sonar]")) {
+      const N = 6;
+      const cells = [...root.querySelectorAll<HTMLButtonElement>(".cell")];
+      const status = root.querySelector<HTMLElement>("[data-status]")!;
+      const log = root.querySelector<HTMLOListElement>("[data-log]")!;
+      const done = root.querySelector<HTMLAnchorElement>("[data-done]")!;
+      const ships = new Set<string>();
+      const key = (x: number, y: number) => `${x},${y}`;
 
-    // 長さ 3 と 2 の艦を重ならないように置く
-    for (const len of [3, 2]) {
-      for (;;) {
-        const h = Math.random() < 0.5;
-        const x = Math.floor(Math.random() * (h ? N - len + 1 : N));
-        const y = Math.floor(Math.random() * (h ? N : N - len + 1));
-        const ks = Array.from({ length: len }, (_, i) => key(h ? x + i : x, h ? y : y + i));
-        if (ks.some((k) => ships.has(k))) continue;
-        ks.forEach((k) => ships.add(k));
-        break;
+      // 長さ 3 と 2 の艦を重ならないように置く
+      for (const len of [3, 2]) {
+        for (;;) {
+          const h = Math.random() < 0.5;
+          const x = Math.floor(Math.random() * (h ? N - len + 1 : N));
+          const y = Math.floor(Math.random() * (h ? N : N - len + 1));
+          const ks = Array.from({ length: len }, (_, i) => key(h ? x + i : x, h ? y : y + i));
+          if (ks.some((k) => ships.has(k))) continue;
+          ks.forEach((k) => ships.add(k));
+          break;
+        }
+      }
+      const total = ships.size;
+      let hits = 0;
+      let shots = 0;
+
+      const near = (x: number, y: number) => {
+        let n = 0;
+        for (let dy = -1; dy <= 1; dy++)
+          for (let dx = -1; dx <= 1; dx++) if (ships.has(key(x + dx, y + dy))) n++;
+        return n;
+      };
+
+      const write = (text: string) => {
+        const li = document.createElement("li");
+        li.textContent = text;
+        log.prepend(li);
+        while (log.children.length > 4) log.lastElementChild!.remove();
+      };
+
+      for (const cell of cells) {
+        const x = Number(cell.dataset.x);
+        const y = Number(cell.dataset.y);
+        const name = cell.getAttribute("aria-label");
+        cell.addEventListener("pointerenter", () => {
+          root.style.setProperty("--hx", String(x));
+          root.style.setProperty("--hy", String(y));
+          root.classList.add("hovering");
+        });
+        cell.addEventListener("pointerleave", () => root.classList.remove("hovering"));
+        cell.addEventListener("click", () => {
+          if (cell.dataset.state) return;
+          shots++;
+          cell.classList.add("ping");
+          if (ships.has(key(x, y))) {
+            hits++;
+            cell.dataset.state = "hit";
+            write(`${String(shots).padStart(2, "0")}  ${name}  HIT`);
+          } else {
+            const n = near(x, y);
+            cell.dataset.state = "miss";
+            cell.querySelector(".v")!.textContent = String(n);
+            write(`${String(shots).padStart(2, "0")}  ${name}  ECHO ${n}`);
+          }
+          status.textContent = `${hits}/${total} hit · ${shots} shots`;
+          if (hits === total) {
+            root.classList.add("cleared");
+            done.hidden = false;
+            for (const c of cells) if (!c.dataset.state) c.disabled = true;
+          }
+        });
       }
     }
-    const total = ships.size;
-    let hits = 0;
-    let shots = 0;
-
-    const near = (x: number, y: number) => {
-      let n = 0;
-      for (let dy = -1; dy <= 1; dy++)
-        for (let dx = -1; dx <= 1; dx++) if (ships.has(key(x + dx, y + dy))) n++;
-      return n;
-    };
-
-    const write = (text: string) => {
-      const li = document.createElement("li");
-      li.textContent = text;
-      log.prepend(li);
-      while (log.children.length > 4) log.lastElementChild!.remove();
-    };
-
-    for (const cell of cells) {
-      const x = Number(cell.dataset.x);
-      const y = Number(cell.dataset.y);
-      const name = cell.getAttribute("aria-label");
-      cell.addEventListener("pointerenter", () => {
-        root.style.setProperty("--hx", String(x));
-        root.style.setProperty("--hy", String(y));
-        root.classList.add("hovering");
-      });
-      cell.addEventListener("pointerleave", () => root.classList.remove("hovering"));
-      cell.addEventListener("click", () => {
-        if (cell.dataset.state) return;
-        shots++;
-        cell.classList.add("ping");
-        if (ships.has(key(x, y))) {
-          hits++;
-          cell.dataset.state = "hit";
-          write(`${String(shots).padStart(2, "0")}  ${name}  HIT`);
-        } else {
-          const n = near(x, y);
-          cell.dataset.state = "miss";
-          cell.querySelector(".v")!.textContent = String(n);
-          write(`${String(shots).padStart(2, "0")}  ${name}  ECHO ${n}`);
-        }
-        status.textContent = `${hits}/${total} hit · ${shots} shots`;
-        if (hits === total) {
-          root.classList.add("cleared");
-          done.hidden = false;
-          for (const c of cells) if (!c.dataset.state) c.disabled = true;
-        }
-      });
-    }
-  }
+  });
 </script>
 
 <style>

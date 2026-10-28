@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Mark from "../components/Mark.astro";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
   title?: string;
@@ -40,6 +41,7 @@ const year = new Date().getFullYear();
     <meta property="og:image" content={new URL(image, Astro.site)} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    <ClientRouter fallback="none" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -101,7 +103,10 @@ const year = new Date().getFullYear();
         },
         { rootMargin: "0px 0px -8% 0px" },
       );
-      document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+      // ページを切り替えるたびに (ClientRouter) 新しい要素を見張る
+      document.addEventListener("astro:page-load", () => {
+        document.querySelectorAll("[data-reveal]:not(.is-in)").forEach((el) => io.observe(el));
+      });
     </script>
   </body>
 </html>
