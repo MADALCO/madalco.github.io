@@ -57,7 +57,7 @@ const year = new Date().getFullYear();
       </a>
       <nav class="mono" aria-label="メイン">
         <a href="/works/" class:list={["ul", { on: path.startsWith("/works") }]}>Works</a>
-        <a href="/#about" class="ul">About</a>
+        <a href="/#about" class="ul" data-nav-about>About</a>
         <a href="/privacy/" class:list={["ul", { on: path.startsWith("/privacy") }]}>Privacy</a>
       </nav>
     </header>
@@ -104,8 +104,18 @@ const year = new Date().getFullYear();
         { rootMargin: "0px 0px -8% 0px" },
       );
       // ページを切り替えるたびに (ClientRouter) 新しい要素を見張る
+      // About はトップの中の区切りなので、その区切りが画面に入っている間だけオレンジにする
+      let aboutSpy: IntersectionObserver | undefined;
       document.addEventListener("astro:page-load", () => {
         document.querySelectorAll("[data-reveal]:not(.is-in)").forEach((el) => io.observe(el));
+        aboutSpy?.disconnect();
+        const link = document.querySelector("[data-nav-about]");
+        const section = document.getElementById("about");
+        if (!link || !section) return;
+        aboutSpy = new IntersectionObserver(([e]) => link.classList.toggle("on", e.isIntersecting), {
+          rootMargin: "-40% 0px -40% 0px",
+        });
+        aboutSpy.observe(section);
       });
     </script>
   </body>
