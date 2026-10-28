@@ -133,6 +133,7 @@ const no = String(d.no).padStart(3, "0");
   }
   :global(body.tone-dark) {
     background: #08090a;
+    background-image: none;
   }
   :global(body.tone-dark .foot) {
     color: #d9d7cf;
@@ -145,11 +146,6 @@ const no = String(d.no).padStart(3, "0");
   :global(body.tone-dark .foot p),
   :global(body.tone-dark .foot .lbl) {
     color: rgba(255, 255, 255, 0.5);
-  }
-  :global(body.tone-dark::before) {
-    mix-blend-mode: screen;
-    opacity: 0.04;
-    filter: invert(1);
   }
   .cover {
     position: relative;

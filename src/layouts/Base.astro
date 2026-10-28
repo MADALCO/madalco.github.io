@@ -115,13 +115,11 @@ const year = new Date().getFullYear();
     align-items: center;
     justify-content: space-between;
     height: 52px;
-    background: color-mix(in srgb, var(--paper) 88%, transparent);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: var(--paper) url("/noise.png");
     border-bottom: 1px solid var(--rule);
   }
   .tone-dark .top {
-    background: color-mix(in srgb, #08090a 70%, transparent);
+    background: #08090a;
     color: #e9e7df;
     border-bottom-color: rgba(255, 255, 255, 0.12);
   }
