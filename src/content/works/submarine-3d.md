@@ -20,10 +20,11 @@ poster: /works/submarine-3d/loop-poster.jpg
 trailer: /works/submarine-3d/trailer.mp4
 trailerPoster: /works/submarine-3d/trailer-poster.jpg
 gallery:
-  - { src: /works/submarine-3d/sz0.jpg, caption: タイトル画面 }
-  - { src: /works/submarine-3d/whale11.jpg, caption: 海底の 2 つの海域 }
-  - { src: /works/submarine-3d/shark3.jpg, caption: 真上から見た盤面 }
-  - { src: /works/submarine-3d/result1.jpg, caption: 勝利と称号の獲得 }
+  - { src: /works/submarine-3d/battle.jpg, caption: 艦隊のど真ん中に命中 }
+  - { src: /works/submarine-3d/sunk-attack.jpg, caption: 撃沈！ 攻撃型原潜 }
+  - { src: /works/submarine-3d/sonar.jpg, caption: ソナーの数字で深さを読む }
+  - { src: /works/submarine-3d/fleets.jpg, caption: 向かい合う 2 つの立体の海 }
+  - { src: /works/submarine-3d/sunk-small.jpg, caption: 撃沈！ 小型潜航艇 }
 features:
   - title: 深さのある海
     body: 縦・横に「深さ」を足した 6×6×3 の立体の海。艦は層をまたいで潜んでいる。
