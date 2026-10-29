@@ -56,8 +56,9 @@ const year = new Date().getFullYear();
         <span>madalco</span>
       </a>
       <nav class="mono" aria-label="メイン">
+        <a href="/" class:list={["ul", { on: path === "/" }]}>Home</a>
         <a href="/works/" class:list={["ul", { on: path.startsWith("/works") }]}>Works</a>
-        <a href="/#about" class="ul" data-nav-about>About</a>
+        <a href="/about/" class:list={["ul", { on: path.startsWith("/about") }]}>About</a>
         <a href="/privacy/" class:list={["ul", { on: path.startsWith("/privacy") }]}>Privacy</a>
       </nav>
     </header>
@@ -75,8 +76,9 @@ const year = new Date().getFullYear();
         </div>
         <div class="mono foot-col">
           <span class="lbl">Index</span>
+          <a class="ul" href="/">Home</a>
           <a class="ul" href="/works/">Works</a>
-          <a class="ul" href="/#about">About</a>
+          <a class="ul" href="/about/">About</a>
           <a class="ul" href="/privacy/">Privacy policy</a>
         </div>
         <div class="mono foot-col">
@@ -104,18 +106,8 @@ const year = new Date().getFullYear();
         { rootMargin: "0px 0px -8% 0px" },
       );
       // ページを切り替えるたびに (ClientRouter) 新しい要素を見張る
-      // About はトップの中の区切りなので、その区切りが画面に入っている間だけオレンジにする
-      let aboutSpy: IntersectionObserver | undefined;
       document.addEventListener("astro:page-load", () => {
         document.querySelectorAll("[data-reveal]:not(.is-in)").forEach((el) => io.observe(el));
-        aboutSpy?.disconnect();
-        const link = document.querySelector("[data-nav-about]");
-        const section = document.getElementById("about");
-        if (!link || !section) return;
-        aboutSpy = new IntersectionObserver(([e]) => link.classList.toggle("on", e.isIntersecting), {
-          rootMargin: "-40% 0px -40% 0px",
-        });
-        aboutSpy.observe(section);
       });
     </script>
   </body>

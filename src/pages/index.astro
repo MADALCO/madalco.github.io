@@ -51,29 +51,6 @@ const nextNo = String(Math.max(0, ...works.map((w) => w.data.no)) + 1).padStart(
     </div>
   </section>
 
-  <section class="about wrap" id="about">
-    <div class="sec-head">
-      <p class="mono idx">About</p>
-      <h2>作り手について</h2>
-    </div>
-    <div class="about-grid" data-reveal>
-      <dl class="facts mono">
-        <div><dt>Name</dt><dd>madalco</dd></div>
-        <div><dt>Since</dt><dd>2026</dd></div>
-        <div><dt>Tools</dt><dd>Unreal Engine, C++</dd></div>
-        <div><dt>Contact</dt><dd><a class="ul" href="https://github.com/MADALCO" rel="noopener">GitHub ↗</a></dd></div>
-      </dl>
-      <div class="about-text">
-        <p>
-          企画、ルール、プログラム、絵作りまでを一人で手がけるゲームの屋号です。ルールの部分は見た目から切り離して作り、CPU 同士で何度も対戦させて確かめてから画面にのせます。
-        </p>
-        <p>
-          最初の作品は、マス目に隠れた艦を探すゲームに「深さ」を足した <a class="ul strong" href="/works/submarine-3d/">SUBMARINE 3D</a>
-          です。作品はこのサイトに順に並べていきます。
-        </p>
-      </div>
-    </div>
-  </section>
 </Base>
 
 <style>
@@ -190,47 +167,6 @@ const nextNo = String(Math.max(0, ...works.map((w) => w.data.no)) + 1).padStart(
     justify-self: end;
   }
 
-  .about {
-    margin-top: clamp(80px, 11vw, 160px);
-  }
-  .about .sec-head {
-    padding-inline: 0;
-  }
-  .about-grid {
-    display: grid;
-    grid-template-columns: 3fr 6fr 3fr;
-    gap: var(--gutter);
-    padding-top: 26px;
-  }
-  .facts {
-    margin: 0;
-  }
-  .facts div {
-    display: grid;
-    grid-template-columns: 70px 1fr;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--rule);
-  }
-  .facts dt {
-    color: var(--ink-3);
-  }
-  .facts dd {
-    margin: 0;
-    text-transform: none;
-  }
-  .about-text {
-    font-size: clamp(16px, 1.35vw, 19px);
-    line-height: 1.95;
-  }
-  .about-text p {
-    margin: 0 0 1.2em;
-  }
-  .strong {
-    font-weight: 700;
-    font-family: var(--f-display);
-    font-variation-settings: "wdth" 115;
-    letter-spacing: 0;
-  }
 
   @media (max-width: 860px) {
     .lede {
@@ -240,8 +176,7 @@ const nextNo = String(Math.max(0, ...works.map((w) => w.data.no)) + 1).padStart(
       justify-self: start;
     }
     .sec-head,
-    .next,
-    .about-grid {
+    .next {
       grid-template-columns: 1fr 1fr;
     }
     .sec-head h2 {
@@ -251,9 +186,6 @@ const nextNo = String(Math.max(0, ...works.map((w) => w.data.no)) + 1).padStart(
     .next-t {
       grid-column: 1 / -1;
       order: 3;
-    }
-    .about-text {
-      grid-column: 1 / -1;
     }
     .hide-sm {
       display: none;

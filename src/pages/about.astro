@@ -1,0 +1,91 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="About" description="madalco について">
+  <section class="wrap head">
+    <p class="mono idx">Index</p>
+    <h1>About</h1>
+  </section>
+
+  <section class="wrap about">
+    <dl class="facts mono">
+      <div><dt>Name</dt><dd>madalco</dd></div>
+      <div><dt>Since</dt><dd>2026</dd></div>
+      <div><dt>Tools</dt><dd>Unreal Engine, C++</dd></div>
+      <div><dt>Contact</dt><dd><a class="ul" href="https://github.com/MADALCO" rel="noopener">GitHub ↗</a></dd></div>
+    </dl>
+    <div class="about-text" data-reveal>
+      <p>
+        企画、ルール、プログラム、絵作りまでを一人で手がけるゲームの屋号です。ルールの部分は見た目から切り離して作り、CPU 同士で何度も対戦させて確かめてから画面にのせます。
+      </p>
+      <p>
+        最初の作品は、マス目に隠れた艦を探すゲームに「深さ」を足した <a class="ul strong" href="/works/submarine-3d/">SUBMARINE 3D</a>
+        です。作品はこのサイトに順に並べていきます。
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head {
+    padding-top: clamp(40px, 7vw, 100px);
+    padding-bottom: 30px;
+  }
+  .idx {
+    color: var(--ink-3);
+    margin: 0;
+  }
+  h1 {
+    margin: 0;
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-variation-settings: "wdth" 125;
+    font-size: clamp(64px, 16vw, 240px);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+  }
+  .about {
+    display: grid;
+    grid-template-columns: 3fr 6fr 3fr;
+    gap: var(--gutter);
+    padding-top: 26px;
+    margin-inline: var(--gutter);
+    padding-inline: 0;
+    border-top: 1px solid var(--rule-strong);
+  }
+  .facts {
+    margin: 0;
+  }
+  .facts div {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .facts dt {
+    color: var(--ink-3);
+  }
+  .facts dd {
+    margin: 0;
+    text-transform: none;
+  }
+  .about-text {
+    font-size: clamp(16px, 1.35vw, 19px);
+    line-height: 1.95;
+  }
+  .about-text p {
+    margin: 0 0 1.2em;
+  }
+  .strong {
+    font-weight: 700;
+    font-family: var(--f-display);
+    font-variation-settings: "wdth" 115;
+    letter-spacing: 0;
+  }
+  @media (max-width: 860px) {
+    .about {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
