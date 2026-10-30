@@ -166,7 +166,8 @@ const fleet = [
             const ship = ships[si];
             ship.hits++;
             cell.dataset.state = "hit";
-            rows[si].querySelectorAll("i")[ship.hits - 1].classList.add("on");
+            // 一覧の船体も、撃った位置と同じ区画を点ける（左/上が艦首）
+              rows[si].querySelectorAll("i")[ship.keys.indexOf(key(x, y))].classList.add("on");
             if (ship.hits === ship.keys.length) {
               sunk++;
               // 沈んだ艦は艦の形で見せる
