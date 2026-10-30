@@ -1,15 +1,42 @@
 ---
-// トップの小さな遊び: 6×6 の海に艦が 2 隻。外れたマスには周り 8 マスの反応数が出る。
+// トップの小さな遊び: 6×6 の海に艦が 2 隻。撃って探して沈める。
+// 外れたマスには、周り 8 マスにいる艦のマス数がソナーの反応として出る。
 const cols = ["A", "B", "C", "D", "E", "F"];
 const rows = [1, 2, 3, 4, 5, 6];
+const fleet = [
+  { name: "潜水艦", len: 3 },
+  { name: "潜航艇", len: 2 },
+];
 ---
 
 <div class="sonar" data-sonar>
-  <div class="sonar-head mono">
-    <span>Sonar / 6×6</span>
-    <span data-status>Click a cell</span>
+  <div class="intro">
+    <p class="mono kicker">Mini game</p>
+    <p class="title">敵の艦を 2 隻、沈めろ。</p>
+    <p class="how">
+      マスを撃って、隠れている艦を探します。外れると、まわり 8 マスにいる艦の数がソナーで返ってきます。
+    </p>
   </div>
-  <div class="board" role="grid" aria-label="ソナーの盤面。マスを押して艦を探す">
+
+  <ul class="fleet mono" aria-label="敵の艦隊">
+    {
+      fleet.map((s, i) => (
+        <li data-ship={i}>
+          <span class="nm">{s.name}</span>
+          <span class="hull" aria-hidden="true">
+            {Array.from({ length: s.len }, () => (
+              <i />
+            ))}
+          </span>
+          <span class="st" data-ship-state>
+            潜航中
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="board" role="grid" aria-label="海域。マスを押して撃つ">
     <span class="corner" aria-hidden="true"></span>
     {cols.map((c) => <span class="axis mono" aria-hidden="true">{c}</span>)}
     {
@@ -27,6 +54,11 @@ const rows = [1, 2, 3, 4, 5, 6];
       ))
     }
   </div>
+
+  <div class="foot-row mono">
+    <span data-status>0 shots</span>
+    <button type="button" class="again" data-again hidden>もう一度</button>
+  </div>
   <ol class="log mono" data-log aria-live="polite"></ol>
   <a class="done mono" href="/works/submarine-3d/" data-done hidden>
     全艦撃沈。深さのある海は <b>SUBMARINE 3D</b> で →
@@ -37,39 +69,73 @@ const rows = [1, 2, 3, 4, 5, 6];
   document.addEventListener("astro:page-load", () => {
     for (const root of document.querySelectorAll<HTMLElement>("[data-sonar]")) {
       const N = 6;
+      const LENS = [3, 2];
+      const NAMES = ["潜水艦", "潜航艇"];
       const cells = [...root.querySelectorAll<HTMLButtonElement>(".cell")];
       const status = root.querySelector<HTMLElement>("[data-status]")!;
       const log = root.querySelector<HTMLOListElement>("[data-log]")!;
       const done = root.querySelector<HTMLAnchorElement>("[data-done]")!;
-      const ships = new Set<string>();
+      const again = root.querySelector<HTMLButtonElement>("[data-again]")!;
+      const rows = [...root.querySelectorAll<HTMLElement>("[data-ship]")];
       const key = (x: number, y: number) => `${x},${y}`;
+      const cellAt = (k: string) => cells.find((c) => key(Number(c.dataset.x), Number(c.dataset.y)) === k)!;
 
-      // 長さ 3 と 2 の艦を重ならないように置く
-      for (const len of [3, 2]) {
-        for (;;) {
-          const h = Math.random() < 0.5;
-          const x = Math.floor(Math.random() * (h ? N - len + 1 : N));
-          const y = Math.floor(Math.random() * (h ? N : N - len + 1));
-          const ks = Array.from({ length: len }, (_, i) => key(h ? x + i : x, h ? y : y + i));
-          if (ks.some((k) => ships.has(k))) continue;
-          ks.forEach((k) => ships.add(k));
-          break;
-        }
-      }
-      const total = ships.size;
-      let hits = 0;
+      // 艦ごとのマスと、マスから艦への引き当て
+      let ships: { keys: string[]; horiz: boolean; hits: number }[] = [];
+      let owner = new Map<string, number>();
       let shots = 0;
+      let sunk = 0;
+
+      const place = () => {
+        ships = [];
+        owner = new Map();
+        LENS.forEach((len, si) => {
+          for (;;) {
+            const horiz = Math.random() < 0.5;
+            const x = Math.floor(Math.random() * (horiz ? N - len + 1 : N));
+            const y = Math.floor(Math.random() * (horiz ? N : N - len + 1));
+            const keys = Array.from({ length: len }, (_, i) => key(horiz ? x + i : x, horiz ? y : y + i));
+            if (keys.some((k) => owner.has(k))) continue;
+            keys.forEach((k) => owner.set(k, si));
+            ships.push({ keys, horiz, hits: 0 });
+            break;
+          }
+        });
+      };
+
+      const reset = () => {
+        place();
+        shots = 0;
+        sunk = 0;
+        log.replaceChildren();
+        root.classList.remove("cleared");
+        done.hidden = true;
+        again.hidden = true;
+        status.textContent = "0 shots";
+        for (const c of cells) {
+          c.disabled = false;
+          delete c.dataset.state;
+          c.className = "cell";
+          c.querySelector(".v")!.textContent = "";
+        }
+        rows.forEach((r) => {
+          r.className = "";
+          r.querySelectorAll("i").forEach((i) => i.classList.remove("on"));
+          r.querySelector("[data-ship-state]")!.textContent = "潜航中";
+        });
+      };
 
       const near = (x: number, y: number) => {
         let n = 0;
         for (let dy = -1; dy <= 1; dy++)
-          for (let dx = -1; dx <= 1; dx++) if (ships.has(key(x + dx, y + dy))) n++;
+          for (let dx = -1; dx <= 1; dx++) if (owner.has(key(x + dx, y + dy))) n++;
         return n;
       };
 
-      const write = (text: string) => {
+      const write = (text: string, hot = false) => {
         const li = document.createElement("li");
-        li.textContent = text;
+        li.textContent = `${String(shots).padStart(2, "0")}  ${text}`;
+        if (hot) li.className = "hot";
         log.prepend(li);
         while (log.children.length > 4) log.lastElementChild!.remove();
       };
@@ -87,44 +153,128 @@ const rows = [1, 2, 3, 4, 5, 6];
         cell.addEventListener("click", () => {
           if (cell.dataset.state) return;
           shots++;
+          cell.classList.remove("ping");
+          void cell.offsetWidth;
           cell.classList.add("ping");
-          if (ships.has(key(x, y))) {
-            hits++;
-            cell.dataset.state = "hit";
-            write(`${String(shots).padStart(2, "0")}  ${name}  HIT`);
-          } else {
+          const si = owner.get(key(x, y));
+          if (si === undefined) {
             const n = near(x, y);
             cell.dataset.state = "miss";
             cell.querySelector(".v")!.textContent = String(n);
-            write(`${String(shots).padStart(2, "0")}  ${name}  ECHO ${n}`);
+            write(`${name}  外れ  ソナー反応 ${n}`);
+          } else {
+            const ship = ships[si];
+            ship.hits++;
+            cell.dataset.state = "hit";
+            rows[si].querySelectorAll("i")[ship.hits - 1].classList.add("on");
+            if (ship.hits === ship.keys.length) {
+              sunk++;
+              // 沈んだ艦は艦の形で見せる
+              ship.keys.forEach((k, i) => {
+                const c = cellAt(k);
+                c.dataset.state = "sunk";
+                c.classList.add(ship.horiz ? "h" : "v");
+                if (i === 0) c.classList.add("bow");
+                if (i === ship.keys.length - 1) c.classList.add("stern");
+              });
+              rows[si].className = "sunk";
+              rows[si].querySelector("[data-ship-state]")!.textContent = "撃沈";
+              write(`${name}  撃沈！ ${NAMES[si]}`, true);
+            } else {
+              write(`${name}  命中`, true);
+            }
           }
-          status.textContent = `${hits}/${total} hit · ${shots} shots`;
-          if (hits === total) {
+          status.textContent = `${shots} shots`;
+          if (sunk === ships.length) {
             root.classList.add("cleared");
             done.hidden = false;
+            again.hidden = false;
+            status.textContent = `${shots} 発で全艦撃沈`;
             for (const c of cells) if (!c.dataset.state) c.disabled = true;
           }
         });
       }
+      again.addEventListener("click", reset);
+      place();
     }
   });
 </script>
 
 <style>
   .sonar {
-    --cell: clamp(34px, 5.2vw, 62px);
+    --cell: clamp(34px, 5.2vw, 58px);
     --line: rgba(19, 20, 17, 0.22);
     width: max-content;
     max-width: 100%;
   }
-  .sonar-head {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    padding-bottom: 10px;
+  .intro {
     margin-left: 22px;
+    max-width: min(360px, calc(100vw - 2 * var(--gutter) - 22px));
+  }
+  .kicker {
+    margin: 0;
+    color: var(--signal);
+  }
+  .title {
+    margin: 6px 0 0;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  .how {
+    margin: 6px 0 0;
+    font-size: 13px;
+    line-height: 1.7;
     color: var(--ink-2);
   }
+
+  .fleet {
+    list-style: none;
+    margin: 16px 0 14px 22px;
+    padding: 0;
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+  }
+  .fleet li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: none;
+  }
+  .nm {
+    color: var(--ink-2);
+  }
+  .hull {
+    display: inline-flex;
+    gap: 2px;
+  }
+  .hull i {
+    width: 14px;
+    height: 10px;
+    border: 1px solid var(--ink);
+    transition: background 0.2s;
+  }
+  .hull i:first-child {
+    border-radius: 6px 0 0 6px;
+  }
+  .hull i:last-child {
+    border-radius: 0 6px 6px 0;
+  }
+  .hull i.on {
+    background: var(--signal);
+    border-color: var(--signal);
+  }
+  .st {
+    color: var(--ink-3);
+  }
+  .fleet li.sunk .nm {
+    text-decoration: line-through;
+  }
+  .fleet li.sunk .st {
+    color: var(--signal);
+  }
+
   .board {
     display: grid;
     grid-template-columns: 22px repeat(6, var(--cell));
@@ -170,13 +320,71 @@ const rows = [1, 2, 3, 4, 5, 6];
   .cell:hover:not([data-state]):not(:disabled) {
     background: rgba(19, 20, 17, 0.07);
   }
-  .cell .v {
-    font-size: 12px;
+
+  /* 外れ: ソナーの輪と反応の数 */
+  .cell[data-state="miss"] .v {
+    display: inline-grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--ink-3);
+    border-radius: 50%;
+    font-size: 11px;
     color: var(--ink-2);
   }
-  .cell[data-state="hit"] {
+  .cell[data-state="miss"] .v:is(:empty) {
+    display: none;
+  }
+
+  /* 命中: 炎のようなオレンジの点 */
+  .cell[data-state="hit"]::before {
+    content: "";
+    position: absolute;
+    inset: 22%;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ffd04a 0 30%, var(--signal) 31% 100%);
+  }
+
+  /* 撃沈: 艦の形で見せる */
+  .cell[data-state="sunk"]::before {
+    content: "";
+    position: absolute;
+    background: var(--ink);
+  }
+  .cell.h[data-state="sunk"]::before {
+    inset: 26% 0;
+  }
+  .cell.v[data-state="sunk"]::before {
+    inset: 0 26%;
+  }
+  .cell.h.bow::before {
+    left: 12%;
+    border-radius: 999px 0 0 999px;
+  }
+  .cell.h.stern::before {
+    right: 12%;
+    border-radius: 0 999px 999px 0;
+  }
+  .cell.v.bow::before {
+    top: 12%;
+    border-radius: 999px 999px 0 0;
+  }
+  .cell.v.stern::before {
+    bottom: 12%;
+    border-radius: 0 0 999px 999px;
+  }
+  .cell[data-state="sunk"]::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    margin: -3px;
+    border-radius: 50%;
     background: var(--signal);
   }
+
   .cell.ping::after {
     content: "";
     position: absolute;
@@ -189,6 +397,9 @@ const rows = [1, 2, 3, 4, 5, 6];
     border-radius: 50%;
     pointer-events: none;
     animation: ping 0.9s cubic-bezier(0.1, 0.6, 0.2, 1) forwards;
+  }
+  .cell[data-state="sunk"].ping::after {
+    animation: none;
   }
   .cell:disabled {
     cursor: default;
@@ -226,16 +437,40 @@ const rows = [1, 2, 3, 4, 5, 6];
   .sonar.hovering:not(.cleared) .board::after {
     opacity: 0.35;
   }
+
+  .foot-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0 0 22px;
+    color: var(--ink-2);
+    text-transform: none;
+  }
+  .again {
+    appearance: none;
+    border: 1px solid var(--ink);
+    background: transparent;
+    padding: 4px 10px;
+    font: inherit;
+    cursor: pointer;
+  }
+  .again[hidden] {
+    display: none;
+  }
   .log {
     list-style: none;
-    margin: 14px 0 0 22px;
+    margin: 10px 0 0 22px;
     padding: 0;
     min-height: 4.5em;
-    color: var(--ink-2);
+    color: var(--ink-3);
     white-space: pre;
+    text-transform: none;
   }
   .log li:first-child {
     color: var(--ink);
+  }
+  .log li.hot:first-child {
+    color: var(--signal);
   }
   .done {
     display: inline-block;
