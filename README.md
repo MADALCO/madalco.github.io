@@ -10,4 +10,4 @@ npm run build
 
 - 作品は `src/content/works/*.md` に 1 作品 1 ファイル。足し方とデザインの決まりは [DESIGN.md](DESIGN.md)。
 - `brand/` にロゴ（EOS のブランド設定用 128×128 と 1024×1024）。`public/logo-128.png` も同じもの。
-- 独自ドメインに移すときは `public/CNAME` を置き、`astro.config.mjs` の `site` を変える。
+- ドメインは madalco.dev（`public/CNAME` と `astro.config.mjs` の `site`、GitHub の Settings → Pages の Custom domain をそろえる）。
