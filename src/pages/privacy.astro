@@ -1,69 +1,223 @@
 ---
 import Base from "../layouts/Base.astro";
-const updated = "2026-10-30";
+const updated = "2026-10-31";
+const mail = "contact@madalco.dev";
+const epicPolicy = "https://www.epicgames.com/site/privacypolicy";
 ---
 
-<Base title="Privacy policy" description="madalco のゲームとこのサイトのプライバシーポリシー">
+<Base title="Privacy policy" description="Privacy policy for madalco games (SUBMARINE 3D) and madalco.dev">
   <article class="wrap pp">
     <header>
       <p class="mono idx">Privacy policy</p>
-      <h1>プライバシーポリシー</h1>
+      <h1>Privacy Policy<br /><span class="ja">プライバシーポリシー</span></h1>
       <p class="mono upd">Last updated {updated}</p>
+      <nav class="mono langs" aria-label="Language">
+        <a class="ul" href="#en">English</a>
+        <a class="ul" href="#ja">日本語</a>
+      </nav>
     </header>
 
     <div class="body">
-      <p>
-        madalco（以下「私たち」）は、私たちが提供するゲーム（SUBMARINE 3D とその後の作品）と、このサイト（以下あわせて「本サービス」）で扱う情報について、次のとおり定めます。
-      </p>
+      <section id="en" lang="en">
+        <p class="lead">
+          This policy explains what personal data madalco ("we") collects through our games, starting with SUBMARINE
+          3D, and through this website (madalco.dev), how we use it, how long we keep it, and how you can access or
+          delete it.
+        </p>
 
-      <h2><span class="mono">01</span>集める情報</h2>
-      <p>オンライン機能を使ったときに限り、Epic Online Services（EOS）を通じて次の情報を扱います。</p>
-      <ul>
-        <li>Epic アカウントの ID と表示名</li>
-        <li>対戦の記録（レート、試合数）とランキングの順位</li>
-        <li>対戦中に送った定型文（相手の画面に表示するためだけに使い、保存しません）</li>
-      </ul>
-      <p>
-        CPU 戦だけを遊ぶ場合、私たちは個人を特定できる情報を集めません。設定や称号、連勝数などは、遊んでいる PC の中にだけ保存されます。
-      </p>
+        <h2><span class="mono">01</span>Who we are</h2>
+        <p>
+          madalco is an independent game developer. Contact: <a class="ul" href={`mailto:${mail}`}>{mail}</a>
+        </p>
 
-      <h2><span class="mono">02</span>使い道</h2>
-      <ul>
-        <li>オンライン対戦の相手探しと、対戦の進行</li>
-        <li>レートの計算とランキングの表示</li>
-        <li>不正やトラブルへの対応</li>
-      </ul>
-      <p>これ以外の目的には使わず、広告のために使ったり、第三者に売ったりすることはありません。</p>
+        <h2><span class="mono">02</span>Do we collect data?</h2>
+        <p>
+          <strong>Only when you use the online features</strong> (signing in with an Epic account, online matches and
+          the ranking). If you only play against the CPU, no personal data leaves your PC and we collect nothing.
+        </p>
 
-      <h2><span class="mono">03</span>第三者のサービス</h2>
-      <p>
-        ログイン、対戦の部屋、記録とランキングには Epic Games, Inc. の Epic Online Services を使っています。Epic Online Services の利用には、<a
-          class="ul"
-          href="https://www.epicgames.com/site/privacypolicy"
-          rel="noopener">Epic Games のプライバシーポリシー</a
-        >が適用されます。
-      </p>
-      <p>
-        このサイトは GitHub Pages で公開し、文字の表示に Google Fonts を使っています。これらのサービスは、ページを届けるためにアクセス元の IP アドレスなどを記録することがあります。このサイト自体は Cookie やアクセス解析を使っていません。
-      </p>
+        <h2><span class="mono">03</span>What we collect, why, and how long we keep it</h2>
+        <div class="tbl">
+          <table>
+            <thead>
+              <tr><th>Data</th><th>Why we use it</th><th>How long we keep it</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Epic Account ID and display name (received when you sign in with Epic)</td>
+                <td>To identify you in online matches, show your name to your opponent and on the ranking</td>
+                <td>While the game's online service is offered, or until you ask us to delete it</td>
+              </tr>
+              <tr>
+                <td>Match records: rating, number of games, ranking position</td>
+                <td>Matchmaking, calculating your rating, showing the ranking</td>
+                <td>While the game's online service is offered, or until you ask us to delete it</td>
+              </tr>
+              <tr>
+                <td>Network connection information, such as your IP address</td>
+                <td>To connect you with the other player during a match</td>
+                <td>Used only during the match. We do not store it</td>
+              </tr>
+              <tr>
+                <td>Quick chat phrases you send during a match</td>
+                <td>To display them on your opponent's screen</td>
+                <td>Not stored</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Settings, earned titles, win streaks and title screenshots are saved only on your own PC and are never sent to
+          us.
+        </p>
 
-      <h2><span class="mono">04</span>保存期間と削除</h2>
-      <p>
-        対戦の記録は、本サービスを提供している間は保存します。自分の記録の確認や削除を希望する場合は、下の連絡先までお知らせください。
-      </p>
+        <h2><span class="mono">04</span>How we use data</h2>
+        <ul>
+          <li>Running online matches and matchmaking</li>
+          <li>Calculating ratings and displaying the ranking</li>
+          <li>Investigating cheating, abuse or technical problems</li>
+        </ul>
+        <p>We do not use your data for advertising, we do not build profiles of you, and we do not sell it.</p>
 
-      <h2><span class="mono">05</span>子どもの利用</h2>
-      <p>13 歳未満の方は、保護者の同意を得たうえでオンライン機能を使ってください。</p>
+        <h2><span class="mono">05</span>Who we share data with</h2>
+        <ul>
+          <li>
+            <strong>Epic Games, Inc.</strong>: sign-in, lobbies, match records and the ranking run on Epic Online
+            Services. Epic Online Services is covered by the <a class="ul" href={epicPolicy} rel="noopener"
+              >Epic Games Privacy Policy</a
+            >.
+          </li>
+          <li>
+            <strong>Other players</strong>: your display name, rating and ranking position are visible to other players.
+            When you connect directly by IP address, the player you connect with can see that address.
+          </li>
+        </ul>
+        <p>We do not share your data with anyone else, except where required by law.</p>
 
-      <h2><span class="mono">06</span>変更</h2>
-      <p>このポリシーを変えるときは、このページで知らせ、上の更新日を改めます。</p>
+        <h2><span class="mono">06</span>Your choices and rights</h2>
+        <ul>
+          <li>You can play without collecting any data by playing only against the CPU.</li>
+          <li>
+            You can ask us to show, correct or delete your match records by emailing <a
+              class="ul"
+              href={`mailto:${mail}`}>{mail}</a
+            > with your Epic display name. We will respond within 30 days.
+          </li>
+        </ul>
 
-      <h2><span class="mono">07</span>連絡先</h2>
-      <p>
-        本ポリシーや情報の扱いについてのお問い合わせは、<a class="ul" href="mailto:contact@madalco.dev"
-          >contact@madalco.dev</a
-        >までメールでお願いします。
-      </p>
+        <h2><span class="mono">07</span>Children</h2>
+        <p>Children under 13 should use the online features only with a parent's or guardian's consent.</p>
+
+        <h2><span class="mono">08</span>This website</h2>
+        <p>
+          madalco.dev is hosted on GitHub Pages and uses Google Fonts. These services may log technical data such as
+          your IP address to deliver the pages. The website itself uses no cookies and no analytics.
+        </p>
+
+        <h2><span class="mono">09</span>Changes</h2>
+        <p>If we change this policy, we will update this page and the date at the top.</p>
+
+        <h2><span class="mono">10</span>Contact</h2>
+        <p>
+          For any question about this policy or your data: <a class="ul" href={`mailto:${mail}`}>{mail}</a>
+        </p>
+      </section>
+
+      <hr class="split" />
+
+      <section id="ja" lang="ja">
+        <p class="lead">
+          madalco（以下「私たち」）が提供するゲーム（SUBMARINE 3D とその後の作品）と、このサイト（madalco.dev）で、どんな個人情報を集め、何に使い、いつまで持ち、どうすれば確認や削除ができるかを説明します。
+        </p>
+
+        <h2><span class="mono">01</span>私たちについて</h2>
+        <p>madalco は個人のゲーム制作者です。連絡先: <a class="ul" href={`mailto:${mail}`}>{mail}</a></p>
+
+        <h2><span class="mono">02</span>情報を集めるか</h2>
+        <p>
+          <strong>オンライン機能を使ったときだけ集めます</strong
+          >（Epic アカウントでのログイン、オンライン対戦、ランキング）。CPU 戦だけを遊ぶ場合、個人情報は PC の外に出ず、私たちは何も集めません。
+        </p>
+
+        <h2><span class="mono">03</span>集める情報、使い道、保存期間</h2>
+        <div class="tbl">
+          <table>
+            <thead>
+              <tr><th>情報</th><th>使い道</th><th>保存期間</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Epic アカウントの ID と表示名（Epic でログインしたときに受け取る）</td>
+                <td>オンライン対戦であなたを見分け、相手の画面とランキングに名前を出すため</td>
+                <td>ゲームのオンラインサービスを提供している間。削除の依頼があればそれまで</td>
+              </tr>
+              <tr>
+                <td>対戦の記録（レート、試合数、ランキングの順位）</td>
+                <td>相手探し、レートの計算、ランキングの表示</td>
+                <td>ゲームのオンラインサービスを提供している間。削除の依頼があればそれまで</td>
+              </tr>
+              <tr>
+                <td>通信のための情報（IP アドレスなど）</td>
+                <td>対戦相手とつなぐため</td>
+                <td>対戦中だけ使い、保存しません</td>
+              </tr>
+              <tr>
+                <td>対戦中に送った定型文</td>
+                <td>相手の画面に表示するため</td>
+                <td>保存しません</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>設定、称号、連勝数、称号の画像は、あなたの PC の中にだけ保存され、私たちには送られません。</p>
+
+        <h2><span class="mono">04</span>使い道</h2>
+        <ul>
+          <li>オンライン対戦と相手探しの運営</li>
+          <li>レートの計算とランキングの表示</li>
+          <li>不正、迷惑行為、不具合の調査</li>
+        </ul>
+        <p>広告には使わず、あなたについての分析もせず、売ることもありません。</p>
+
+        <h2><span class="mono">05</span>情報を渡す相手</h2>
+        <ul>
+          <li>
+            <strong>Epic Games, Inc.</strong>: ログイン、対戦の部屋、対戦の記録とランキングは Epic Online Services
+            の上で動いています。Epic Online Services には <a class="ul" href={epicPolicy} rel="noopener"
+              >Epic Games のプライバシーポリシー</a
+            >が適用されます。
+          </li>
+          <li>
+            <strong>ほかのプレイヤー</strong>: 表示名、レート、ランキングの順位はほかのプレイヤーに見えます。IP
+            アドレスで直接つなぐときは、つないだ相手にそのアドレスが見えます。
+          </li>
+        </ul>
+        <p>法令で求められる場合を除き、これ以外の相手には渡しません。</p>
+
+        <h2><span class="mono">06</span>あなたができること</h2>
+        <ul>
+          <li>CPU 戦だけを遊べば、情報を一切集めずに遊べます。</li>
+          <li>
+            対戦の記録の確認、訂正、削除を希望する場合は、Epic の表示名を添えて <a class="ul" href={`mailto:${mail}`}
+              >{mail}</a
+            > までメールしてください。30 日以内に対応します。
+          </li>
+        </ul>
+
+        <h2><span class="mono">07</span>子どもの利用</h2>
+        <p>13 歳未満の方は、保護者の同意を得たうえでオンライン機能を使ってください。</p>
+
+        <h2><span class="mono">08</span>このサイトについて</h2>
+        <p>
+          madalco.dev は GitHub Pages で公開し、文字の表示に Google Fonts を使っています。これらのサービスは、ページを届けるために IP アドレスなどを記録することがあります。このサイト自体は Cookie やアクセス解析を使っていません。
+        </p>
+
+        <h2><span class="mono">09</span>変更</h2>
+        <p>このポリシーを変えるときは、このページで知らせ、上の更新日を改めます。</p>
+
+        <h2><span class="mono">10</span>連絡先</h2>
+        <p>本ポリシーや情報の扱いについてのお問い合わせ: <a class="ul" href={`mailto:${mail}`}>{mail}</a></p>
+      </section>
     </div>
   </article>
 </Base>
@@ -89,14 +243,30 @@ const updated = "2026-10-30";
     font-size: clamp(28px, 3vw, 42px);
     line-height: 1.3;
   }
+  h1 .ja {
+    font-size: 0.55em;
+    color: var(--ink-2);
+  }
   .upd {
     margin-top: 16px;
     color: var(--ink-2);
   }
+  .langs {
+    display: flex;
+    gap: 18px;
+    margin-top: 18px;
+  }
   .body {
     border-top: 1px solid var(--rule-strong);
     padding-top: 10px;
-    max-width: 40em;
+    max-width: 44em;
+    min-width: 0;
+  }
+  section {
+    scroll-margin-top: 70px;
+  }
+  .lead {
+    font-size: 1.05em;
   }
   h2 {
     display: flex;
@@ -117,12 +287,47 @@ const updated = "2026-10-30";
   a.ul {
     border-bottom: 1px solid var(--rule-strong);
   }
+  .tbl {
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  th {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    text-align: left;
+  }
+  th,
+  td {
+    padding: 10px 12px 10px 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  thead th {
+    border-bottom-color: var(--rule-strong);
+  }
+  .split {
+    border: 0;
+    border-top: 1px solid var(--rule-strong);
+    margin: 80px 0 40px;
+  }
   @media (max-width: 860px) {
     .pp {
       grid-template-columns: 1fr;
     }
     header {
       position: static;
+    }
+    table {
+      min-width: 520px;
     }
   }
 </style>
