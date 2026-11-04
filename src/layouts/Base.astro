@@ -109,6 +109,10 @@ const year = new Date().getFullYear();
       document.addEventListener("astro:page-load", () => {
         document.querySelectorAll("[data-reveal]:not(.is-in)").forEach((el) => io.observe(el));
       });
+      // 切り替えで入ったページの動画は読み込まれないままなので、読み込み直す（autoplay もこれで動く）
+      document.addEventListener("astro:after-swap", () => {
+        document.querySelectorAll("video").forEach((v) => v.load());
+      });
     </script>
   </body>
 </html>
