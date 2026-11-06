@@ -6,7 +6,7 @@ titleFont: Audiowide
 tagline: 深さまで読んだ者が、勝つ。
 genre: 3D 潜水艦バトル（ターン制）
 year: 2026
-status: 公開準備中
+status: 公開中
 platforms: [Windows]
 players: 1 人（CPU 戦）／ 2 人（オンライン対戦）
 engine: Unreal Engine 5
@@ -37,7 +37,7 @@ features:
   - title: 称号
     body: 無傷の勝利、強敵撃破、一番槍。条件を満たすと称号が手に入る。いくつかはシークレット。
 links:
-  - { label: itch.io, note: 近日公開 }
+  - { label: itch.io で遊ぶ, href: "https://madalco.itch.io/submarine-3d" }
   - { label: Steam, note: 準備中 }
 ---
 
